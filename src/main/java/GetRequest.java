@@ -23,11 +23,17 @@ public class GetRequest {
                 List<FactsOfCats> responseList = mapper.readValue(response.getEntity().getContent(),
                         new TypeReference<>() {
                         });
-                List<FactsOfCats> filteredOfNotNullUpvotesList = responseList.stream().filter(factsOfCats -> factsOfCats.getUpvotes() != null).collect(Collectors.toList());
+                List<FactsOfCats> filteredOfNotNullUpvotesList = getFilteredList(responseList);
                 filteredOfNotNullUpvotesList.forEach(System.out::println);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static List<FactsOfCats> getFilteredList (List<FactsOfCats> responseList){
+        return responseList.stream()
+                .filter(factsOfCats -> factsOfCats.getUpvotes() != 0)
+                .collect(Collectors.toList());
     }
 }
